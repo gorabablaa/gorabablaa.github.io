@@ -1,0 +1,829 @@
+/*
+GlobalVars.ajaxurl
+*/
+
+function validarBusqueda(){
+  if(jQuery("#s").val()==""){
+    jQuery("#search #searchform .tip").fadeIn();
+    return false;
+  }else{
+    jQuery("#search #searchform .tip").fadeOut();
+    return true;
+  }
+}
+
+
+
+/*VALIDAR DATOS*/
+function validarCP(cp){
+  var exr = /^([1-9]{2}|[0-9][1-9]|[1-9][0-9])[0-9]{3}$/;
+  return exr.test(cp);
+}
+function validarEmail(mail) {
+  var exr = /^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,4}$/i;
+  return exr.test(mail);
+}
+function validarPass(pass) {
+  var exr = /^.{4,12}$/;
+  return exr.test(pass);
+}
+function validarTelefono(tlf){
+   var exr = /[6,7,9]\d{8}/;
+   return  exr.test(tlf);
+}
+function validarMovil(tlf) {
+  var exr = /6\d{8}/;
+  var exr2 = /7\d{8}/;
+  return (exr.test(tlf) || exr2.test(tlf));
+}
+function validarFijo(tlf) {
+  var exr = /9\d{8}/;
+  return exr.test(tlf);
+}
+function validarFecha(fecha){
+  var dtCh= "/";
+  var minYear=1900;
+  var maxYear=2100;
+  function isInteger(s){
+    var i;
+    for (i = 0; i < s.length; i++){
+      var c = s.charAt(i);
+      if (((c < "0") || (c > "9"))) return false;
+    }
+    return true;
+  }
+  function stripCharsInBag(s, bag){
+    var i;
+    var returnString = "";
+    for (i = 0; i < s.length; i++){
+      var c = s.charAt(i);
+      if (bag.indexOf(c) == -1) returnString += c;
+    }
+    return returnString;
+  }
+  function daysInFebruary (year){
+    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
+  }
+  function DaysArray(n) {
+    for (var i = 1; i <= n; i++) {
+      this[i] = 31
+      if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
+      if (i==2) {this[i] = 29}
+    }
+    return this
+  }
+  function isDate(dtStr){
+    var daysInMonth = DaysArray(12)
+    var pos1=dtStr.indexOf(dtCh)
+    var pos2=dtStr.indexOf(dtCh,pos1+1)
+    var strDay=dtStr.substring(0,pos1)
+    var strMonth=dtStr.substring(pos1+1,pos2)
+    var strYear=dtStr.substring(pos2+1)
+    strYr=strYear
+    if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
+    if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
+    for (var i = 1; i <= 3; i++) {
+      if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
+    }
+    month=parseInt(strMonth)
+    day=parseInt(strDay)
+    year=parseInt(strYr)
+    if (pos1==-1 || pos2==-1){
+      return false
+    }
+    if (strMonth.length<1 || month<1 || month>12){
+      return false
+    }
+    if (strDay.length<1 || day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
+      return false
+    }
+    if (strYear.length != 4 || year==0 || year<minYear || year>maxYear){
+      return false
+    }
+    if (dtStr.indexOf(dtCh,pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false){
+      return false
+    }
+    return true
+  }
+  if(isDate(fecha)){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+/**
+FIN VALIDACION
+**/
+
+
+
+
+
+
+
+var margin;
+jQuery( document ).ready(function() {
+
+  margin = parseInt(jQuery(".ls-slide .ls-bg").css('margin-top'));
+  //console.log("margin "+margin)
+ 
+
+
+  jQuery("#formRegistro input").live("keypress",function(e){
+      var code = e.keyCode || e.which;
+      if(code == 13) { //Enter keycode
+        registrar();
+      }
+  });
+  jQuery("#formLogin input").live("keypress",function(e){
+      var code = e.keyCode || e.which;
+      if(code == 13) { //Enter keycode
+        login(); 
+      }
+  });
+  jQuery("#s").keypress(function(event) {
+    jQuery("#search #searchform .tip").fadeOut();
+  });
+
+	jQuery('.widget-title').addClass('open');
+	
+	jQuery(".widget-title").on('click', function(eve){
+		 eve.preventDefault(); 
+		 
+		 var $t = jQuery('.widget-title');
+		 
+		 if (jQuery(this).hasClass('open')) {
+		    jQuery(this).next('ul').slideUp();
+		    // Other stuff to do on slideUp
+		 } else {
+		   jQuery(this).next('ul').slideDown();
+		    // Other stuff to down on slideDown
+		 }
+		 
+		 jQuery(this).toggleClass("open");
+	});
+
+    jQuery("#ver_menu").click(function(){
+      jQuery("nav#menu").slideToggle();
+      
+    });
+    jQuery("#ver_buscador").click(function(){
+      jQuery("#header #search").fadeToggle();
+      
+    });
+    
+    /* funcion para partners imagenes */
+    var sourceSwap = function () {
+        var $this = jQuery(this);
+        var newSource = $this.data('alt-src');
+        $this.data('alt-src', $this.attr('src'));
+        $this.attr('src', newSource);
+    }
+
+    jQuery('img.partner').hover(sourceSwap, sourceSwap);
+
+
+
+    /*cabecera desplegar*/
+    jQuery(".desplegarMenu").click(function(){
+		jQuery("body").removeClass("headermini");
+		return false;
+	});
+
+	/*layer cerrar*/
+	
+	jQuery(".cerrarLayer").live("click",function() {
+		
+	 cerrarLayer();
+    return false;
+	});
+  jQuery("#overlay").click(function(event) {
+    cerrarLayer();
+  });
+
+
+  //comprobar #registro
+   
+  if(window.location.href.indexOf('#registro') > -1){
+   
+    jQuery("#layer .cierre a:first-child").click();
+    var url = window.location.href.replace("#registro", "");
+    if( window.history.pushState){
+      window.history.pushState('home', 'HCMN', url);
+    } 
+  }
+  
+
+
+	//Inicializamos el widget de twitter, fb y youtube abierto
+	/*
+	jQuery('.widget_recent_entries').css('display','block');
+	jQuery('.widget_archive').css('display','block');
+	jQuery('.widget_categories').css('display','block');
+	*/
+	jQuery('.widget-easy-twitter-feed-widget-row').css('display','block');
+	jQuery('#fb_sidebar_widget').css('display','block');
+	jQuery('div.youtubechannelgallery').css('display','block');
+
+	/*
+	jQuery('.widget_recent_entries h3.widget-title').addClass('open');
+	jQuery('.widget_archive h3.widget-title').addClass('open');
+	jQuery('.widget_categories h3.widget-title').addClass('open');
+	*/
+	jQuery('.widget-easy-twitter-feed-widget-container p.widget-title').addClass('open');
+	jQuery('.widget_FacebookLikeBox p.widget-title').addClass('open');
+	jQuery('#youtubechannelgallery_widget-2 p.widget-title').addClass('open');
+
+	/*
+	jQuery('.widget_recent_entries h3.widget-title').click(function(){
+	  jQuery('.widget_recent_entries h3.widget-title').toggleClass('open');
+	  jQuery(this).next('ul').toggle(600);
+	});
+
+	jQuery('.widget_archive h3.widget-title').click(function(){
+	  jQuery('.widget_archive h3.widget-title').toggleClass('open');
+	  jQuery(this).next('ul').toggle(600);
+	});
+
+	jQuery('.widget_categories h3.widget-title').click(function(){
+	  jQuery('.widget_categories h3.widget-title').toggleClass('open');
+	  jQuery(this).next('ul').toggle(600);
+	});
+	*/
+	jQuery('.widget-easy-twitter-feed-widget-container p.widget-title').click(function(){
+	  jQuery('.widget-easy-twitter-feed-widget-container p.widget-title').toggleClass('', 'open');
+	  jQuery('.widget-easy-twitter-feed-widget-row').toggle(600);
+	});
+
+	jQuery('.widget-container.widget_FacebookLikeBox p.widget-title').click(function(){
+	  jQuery('.widget_FacebookLikeBox p.widget-title').toggleClass('', 'open');
+	  jQuery('.fb_iframe_widget').toggle(600);
+	});
+
+	jQuery('#youtubechannelgallery_widget-2 p.widget-title').click(function(){
+	  jQuery(this).next('div.youtubechannelgallery').toggle(600);
+	  jQuery('#youtubechannelgallery_widget-2 p.widget-title').toggleClass('', 'open');
+	});
+
+	//eliminado porque peta WP_admin JC > 15jul16
+  	//jQuery('#txtfechanacim').mask('00/00/0000');
+
+	//tabs legales
+	jQuery(".tabs ul li a").click(function(){
+		jQuery("ul.nav-tabs li").removeClass("active");
+		jQuery(this).parent().addClass("active");
+
+		jQuery(".tab-pane").removeClass("active");
+		jQuery("#"+jQuery(this).attr("data-target")).addClass("active");
+
+	});
+
+	// funcion leer mas en ¡A TU SALUD!
+	jQuery.fn.extend({
+	    toggleText: function (a, b){
+	        var that = this;
+	            if (that.text() != a && that.text() != b){
+	                that.text(a);
+	            }
+	            else
+	            if (that.text() == a){
+	                that.text(b);
+	            }
+	            else
+	            if (that.text() == b){
+	                that.text(a);
+	            }
+	        return this;
+	    }
+	});
+
+	jQuery('.js-contenido.abierto').find('.completo').show();
+	jQuery('.js-contenido.abierto').find('.breve').hide();
+
+	jQuery('.js-contenido.cerrado').find('.completo').hide();
+	jQuery('.js-contenido.cerrado').find('.breve').show();
+
+
+	jQuery('.mostrar-contenido').on('click',function(){
+		var seleccionado = jQuery(this).parent().find('.js-contenido');
+	    jQuery(seleccionado).toggleClass('abierto');
+	    jQuery(this).toggleText("LEER MÁS", "LEER MÁS");
+
+		if (seleccionado.hasClass ('abierto')) {
+		   jQuery(seleccionado).find('.completo').show();
+		   jQuery(seleccionado).find('.breve').hide();
+		} else {
+		   jQuery(seleccionado).find('.completo').hide();
+		   jQuery(seleccionado).find('.breve').show();
+		}
+	});
+
+	// reemplazamos el texto del menu por una imagen
+	jQuery('nav#menu ul li.menu-item-7424 a').html('<img src="/wp-content/themes/ifa2015/images/icon-a-tu-salud.png" alt="a tu salud" title="a tu salud" class="a-tu-salud-icon">');
+	jQuery('nav#menu ul li.menu-item-7424 a').addClass("a-tu-salud-menu");
+
+}
+
+
+
+
+);
+/*cebecera scroll*/
+
+jQuery(window).scroll(function() {
+	if(jQuery(document).scrollTop()>350){
+		jQuery("body").addClass("headermini");
+	}else{
+		jQuery("body").removeClass("headermini");
+	}
+  if(margin == 0){
+    margin = -152//parseInt(jQuery(".ls-slide .ls-bg").css('margin-top'));
+  }
+  
+  var dest =  margin + jQuery(document).scrollTop();
+  //console.log("P: "+jQuery(document).scrollTop());
+
+  jQuery(".ls-slide .ls-bg").css('marginTop',dest );
+
+});
+
+
+
+/* funcion que abre layer cargando un ajax dentro */
+ var currentLayer;
+function layer(opc,txt){
+
+  if(opc == currentLayer){
+    //cerrar
+    cerrarLayer();
+
+  }else{
+    //abrir
+    if(txt==null) txt="";
+  	jQuery.ajax({
+       type: 'POST',
+       url: GlobalVars.ajaxurl,
+       data: 'action=cargarLayer&opc='+opc+"&txt="+txt,
+       success: function(response){
+        	//  jQuery("#layer .content").animate({
+         // 		'height':600
+         // 		},
+         // 		500, function() {
+         // 		jQuery("#layer .content .center-block").html(response);	
+         // 	});
+           jQuery("#layer .content").addClass('opened');
+           jQuery("#overlay").fadeIn();
+         	  setTimeout(function(){
+                jQuery("#layer .content .center-block").html(response); 
+				//muestro campos promo
+				console.log("---"+promo);
+			    if(promo!=false){pintarPromo(promo);}
+
+            },600)
+        
+         
+        },
+     });
+     currentLayer = opc;
+  }
+ 
+}
+
+var postLogin = false;
+function cerrarLayer(){
+  jQuery("#layer .content .center-block").html(""); 
+  jQuery("#layer .content").removeClass('opened');
+  jQuery("#overlay").fadeOut();
+  currentLayer = "";
+  if (postLogin) setTimeout(function() { postLogin = false; location = '/'; }, 500);
+}
+
+function validarReg(mod){
+  if(mod==null) mod = false;
+  var error = false;
+  var nombre = jQuery("#txtnombre").val();
+  var apellidos = jQuery("#txtapellidos").val();
+  var fechanacim = jQuery("#txtfechanacim").val();
+  var telefono = jQuery("#txttelefono").val();
+  var cp = jQuery("#txtcp").val();
+  var email = jQuery("#txtemail").val();
+  var email2 = jQuery("#txtemail2").val();
+  var pass = jQuery("#txtpass").val();
+  var pass2 = jQuery("#txtpass2").val();
+  var codPromReg = jQuery("#codigoPromoRegistro").val();
+  
+  jQuery("#formRegistro input").removeClass('error');
+  jQuery(".msg-error").fadeOut();
+  jQuery("label[for='chkBases']").removeClass('error');
+
+  if(nombre==""){
+    error = true;
+    jQuery("#txtnombre").addClass('error');
+  }
+  if(apellidos==""){
+    error = true;
+    jQuery("#txtapellidos").addClass('error');
+  }
+  if(fechanacim==""){
+      error = true;
+      jQuery("#txtfechanacim").addClass('error');
+  }else{
+    if(!validarFecha(fechanacim)){
+      error = true;
+      jQuery("#txtfechanacim").addClass('error');
+    }
+  }
+  if (!validarTelefono(telefono)) {
+    error = true;
+    jQuery("#txttelefono").addClass('error');
+  }
+  if (!validarEmail(email)) {
+    error = true;
+    jQuery("#txtemail").addClass('error');
+  }
+  if(email != email2){
+    error = true
+   jQuery("#txtemail").addClass('error');
+   jQuery("#txtemail2").addClass('error'); 
+  }
+
+  if(mod){
+    if(pass!=""){
+      if (!validarPass(pass)) {
+            error = true;
+            jQuery("#txtpass").addClass('error');
+      }
+     if(pass!=pass2){
+            error = true;
+            jQuery("#txtpass").addClass('error'); 
+            jQuery("#txtpass2").addClass('error'); 
+      }      
+    }
+
+  }else{
+
+    if (!validarPass(pass)) {
+      error = true;
+      jQuery("#txtpass").addClass('error');
+    }
+    if(pass!=pass2){
+      error = true;
+      jQuery("#txtpass").addClass('error'); 
+      jQuery("#txtpass2").addClass('error'); 
+    }
+  }
+  if(cp=="" || !validarCP(cp)){
+    error = true;
+    jQuery("#txtcp").addClass('error'); 
+  }
+  if(!mod) {
+    if(!jQuery("#chkBases").is(":checked")){
+      error = true;
+      jQuery("label[for='chkBases']").addClass('error');
+    }
+  }
+  
+  console.log('****** '+promo+' '+codPromReg);
+  if (promo != false && codPromReg != "8480012017739")
+  {
+	  error = true;
+	  jQuery("#codigoPromoRegistro").addClass('error');
+  }
+
+  if (error) {
+    jQuery(".msg-error").fadeIn();
+  }
+
+  return !error;
+}
+
+
+function registrar(){
+	var datos = jQuery("#formRegistro").serialize();
+	
+	   if(validarReg()){
+
+
+
+      jQuery("#formRegistro a.boton").html("GUARDANDO...")
+      jQuery("#formRegistro a.boton").addClass('botoncargando');
+      jQuery("#formRegistro a.boton").removeClass('boton')
+      //jQuery("#formRegistro").submit();
+        jQuery.ajax({
+         type: 'POST',
+         url: jQuery("#formRegistro").attr("action"),
+         data: datos,
+         success: function(response){
+		    console.log(">>>>> resultado >>>>> "+response);
+            var el = jQuery( '<div></div>' );
+            el.html(response);
+            if(jQuery("p.error",  el).length>0){
+              mensaje = jQuery("p.error", el).html();
+               layer("registro-ko", mensaje);
+            }else{
+              mensaje = jQuery("p.message", el).html();
+               
+			    console.log(">>>>> mensaje >>>>> "+mensaje);
+			   	//si registra usuario, se guarda datos promocion
+			  if(promo!=false){
+						  jQuery.ajax({
+						   type: 'POST',
+						   url: "/wp-content/themes/ifa2015/ajax-guardarPromo.php",
+						   data: datos,
+						   success: function(response){
+
+						    // layer("registro-ok", "¡Enhorabuena! Ya participas en el sorteo de la camiseta más especial de Pau Gasol. Además, te has registrado correctamente.<br>En breves momentos te enviaremos un email<br>donde podrás activar tu cuenta.");
+							  /* switch(response){
+								  case 'OK':
+									layer("registro-ok");
+									break;
+								  case 'KO2': //email en uso
+									layer("registro-duplicado");
+									break;
+								  case 'KO3': //ya estas registrado
+								   layer("registro-anterior");
+									break;
+								  case 'KO': //error generico
+								  default:
+									layer("registro-error");
+									break;
+									
+							   }
+							   */
+							},
+						 });
+			  }else{
+				  layer("registro-ok", mensaje);
+			  }
+
+			   
+			   
+			   
+            }
+             // alert(mensaje);
+             
+          },
+       });
+      
+       /*
+        var datos = jQuery("#formRegistro").serialize();
+        jQuery.ajax({
+         type: 'POST',
+         url: GlobalVars.ajaxurl,
+         data: 'action=registerUser&'+datos,
+         success: function(response){
+       
+             switch(response){
+                case 'OK':
+                  layer("registro-ok");
+                  break;
+                case 'KO2': //email en uso
+                  layer("registro-duplicado");
+                  break;
+                case 'KO3': //ya estas registrado
+                 layer("registro-anterior");
+                  break;
+                case 'KO': //error generico
+                default:
+                  layer("registro-error");
+                  break;
+                  
+             }
+            
+          
+           
+          },
+       });
+      */
+
+    }
+}
+
+function login(){
+
+          var datos = jQuery("#formLogin").serialize();
+
+				  
+				  
+				  
+    if(validarLogin()){
+
+
+
+
+
+      jQuery("#formLogin a.boton").html("CARGANDO...")
+      jQuery("#formLogin a.boton").addClass('botoncargando');
+      jQuery("#formLogin a.boton").removeClass('boton')
+
+
+      jQuery("#emailLogin").removeClass('error');
+      jQuery("#passLogin").removeClass('error');
+      jQuery(".msg-error-login").fadeOut();
+
+         jQuery.ajax({
+         type: 'POST',
+         url: GlobalVars.ajaxurl,
+         data: 'action=loginUser&'+datos,
+         success: function(response){
+         
+             switch(response){
+                
+                case 'OK':
+
+
+									  if(promo!=false){
+												  jQuery.ajax({
+												   type: 'POST',
+												   url: "/wp-content/themes/ifa2015/ajax-guardarPromo.php",
+												   data: datos,
+												   success: function(response){
+
+														  //self.location.reload(); 
+                             							  layer("registro-ok", "¡Enhorabuena! Ya participas en el sorteo de la camiseta más especial de Pau Gasol.");
+														  postLogin = true;
+														  /* switch(response){
+															  case 'OK':
+																layer("registro-ok");
+																break;
+															  case 'KO2': //email en uso
+																layer("registro-duplicado");
+																break;
+															  case 'KO3': //ya estas registrado
+															   layer("registro-anterior");
+																break;
+															  case 'KO': //error generico
+															  default:
+																layer("registro-error");
+																break;
+																
+														   }
+														   */
+													},
+												 });
+									  }else{
+                      self.location.reload();
+                    }
+
+
+
+                  break;
+                default:
+                    jQuery("#formLogin a.botoncargando").html("ENTRAR")
+                    jQuery("#formLogin a.botoncargando").addClass('boton')
+                    jQuery("#formLogin a.botoncargando").removeClass('botoncargando');
+
+                   jQuery(".msg-error-login").fadeIn();
+                    jQuery("#emailLogin").addClass('error');
+                      jQuery("#passLogin").addClass('error');
+                  break;
+                  
+             }
+            
+          
+           
+          },
+       });
+    }
+	
+	
+	
+
+
+
+
+}
+
+function validarLogin(){
+     var email = jQuery("#emailLogin").val();
+     var pass = jQuery("#passLogin").val();
+	 var codPromLogin = jQuery("#codigoPromoLogin").val();
+     var error = false;
+
+      jQuery("#emailLogin").removeClass('error');
+      jQuery("#passLogin").removeClass('error');
+      jQuery(".msg-error-login").fadeOut();
+
+     if(email==""){
+        jQuery(".msg-error-login").fadeIn();
+        jQuery("#emailLogin").addClass('error');
+        error= true;
+      }
+      if(pass ==""){
+        jQuery(".msg-error-login").fadeIn();
+        jQuery("#passLogin").addClass('error');
+        error= true;
+      }
+	  if (promo!=false && codPromLogin!="8480012017739")
+	  {
+        jQuery(".msg-error-login").fadeIn();
+        jQuery("#codigoPromoLogin").addClass('error');
+        error= true;
+	  }
+	  
+    return !error;
+}
+
+function logout(){
+    jQuery.ajax({
+         type: 'POST',
+         url: GlobalVars.ajaxurl,
+         data: 'action=logoutUser',
+         success: function(response){
+           self.location.reload(); 
+             
+           
+          },
+       });
+}
+
+function guardarDatos(){
+  if(validarReg(true)){
+
+        jQuery("#formRegistro a.boton").html("GUARDANDO...")
+       jQuery("#formRegistro a.boton").addClass('botoncargando');
+        jQuery("#formRegistro a.boton").removeClass('boton')
+
+        var datos = jQuery("#formRegistro").serialize();
+        jQuery.ajax({
+         type: 'POST',
+         url: GlobalVars.ajaxurl,
+         data: 'action=modificarUser&'+datos,
+         success: function(response){
+       
+             switch(response){
+                case 'OK':
+                  layer("guardar-ok");
+                  break;
+                case 'OK2':
+                  layer("baja-ok");
+                  break;
+
+                case 'KO2':
+                  layer("guardar-ko2")
+                case 'KO': //email en uso
+                default:
+                  layer("guardar-ko");
+                  break;
+                  
+             }
+            
+          
+           
+          },
+       });
+
+
+    }
+}
+
+function popup(obj){
+  var social = window.open(obj.href, "social", "width=550, height=400");
+  return false;
+}
+
+
+//muestra campos en form y login para la promo activa
+function pintarPromo(_idPromo){
+  console.log("## idPromo >> "+_idPromo);
+  jQuery(".js-promo-registro-contenedor").html('<label for="promo">Codigo de barras Pizarras Solidarias</label><input name="codigoPromo" id="codigoPromoRegistro" type="text"><input name="idPromo" id="idPromo" type="hidden"  value="'+_idPromo+'">');
+  jQuery(".js-promo-login-contenedor").html('<label for="promo">Codigo de barras Pizarras Solidarias</label><input name="codigoPromo" id="codigoPromoLogin" type="text"><input name="idPromo" id="idPromo" type="hidden" value="'+_idPromo+'">');
+}
+
+function promologin(){
+  var error = false;
+  var datos = jQuery("#formLogin").serialize();
+  var codProm = jQuery("#codigoPromo").val();
+  
+  if (promo != false && codProm != "8480012017739")
+  {
+	  error = true;
+	  jQuery("#codigoPromo").addClass('error');
+  }
+
+  if (!error)
+  {
+	  jQuery.ajax({
+	   type: 'POST',
+	   url: "/wp-content/themes/ifa2015/ajax-guardarPromo.php",
+	   data: datos,
+	   success: function(response){
+	
+		  //self.location.reload(); 
+		  layer("registro-ok", "¡Enhorabuena! Ya participas en el sorteo de la camiseta más especial de Pau Gasol.");
+		
+	  },
+	  });
+  }
+  else {
+	jQuery(".msg-error-participa").fadeIn();
+
+  }
+}
+
+jQuery( document ).ready(function() {
+  jQuery('#ver-instrucciones-supersaludables').click(function() {
+         jQuery('.instrucciones-supersaludables').toggle("slide");
+    });
+});

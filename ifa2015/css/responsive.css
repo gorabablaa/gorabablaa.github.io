@@ -1,0 +1,185 @@
+/* Responsive */
+@media screen and (min-width:981px) and (max-width:1199px) {
+}
+@media screen and (min-width:829px) and (max-width:1770px) {
+	#search {
+    	 bottom: 102px;
+		 right: 160px;
+	}
+}
+
+@media screen and (min-width:1612px) and (max-width:1655px) {
+	#search #searchform div { width: 380px !important }
+	#search #searchform div input[type="submit"] { float: right; margin-top: -24px;}
+
+}
+@media screen and (min-width:1530px) and (max-width:1611px) {
+	#search #searchform div { width: 340px !important }
+	#search #searchform div input[type="submit"] { float: right; margin-top: -24px;}
+
+}
+@media screen and (min-width:1330px) and (max-width:1529px) {
+	#search #searchform div { width: 240px !important }
+	#search #searchform div input[type="submit"] { float: right; margin-top: -24px;}
+
+}
+@media screen and (min-width:1281px) and (max-width:1329px) {
+	#search #searchform div { width: 210px !important }
+	#search #searchform div input[type="submit"] { float: right; margin-top: -24px;}
+}
+
+@media screen and (min-width:981px) and (max-width:1280px) {
+	/* .page-template-page-nuestra-cocina .item_ncocina img { max-height: 162px !important} */
+	.page-template-page-nuestra-cocina .categoria img { height: 30px !important}
+}
+@media screen and (min-width:769px) and (max-width:980px) {
+	.item .sombra {width: 97%}
+	.nc_categorias li {width: 32%;}
+	.item_mini {padding: 2%; width: 31.3%;}
+	.item_mini .sombra { width: 94%; }
+	.item_blog { width: 31%}
+}
+@media screen and (min-width:376px) and (max-width:768px) {
+	.page-template-page-nuestra-cocina .item_ncocina .content_padding a img {
+	    /* max-height: 210px !important */
+	    width: 100%;
+	    height: auto;
+	}
+	.page-template-page-nuestra-cocina .categoria img { height: 30px !important}
+	.single-nuestra-cocina .i_like {
+		border-bottom: none;
+		border-top: 1px dotted #000;
+		border-left: 1px dotted #000;
+		border-right: 1px dotted #000;
+	}
+	.single-nuestra-cocina .btn_imprimir {
+		border-bottom: 1px dotted #000;
+		border-top: none;
+		border-left: 1px dotted #000;
+		border-right: 1px dotted #000;
+	}
+	.item_big .sombra { width: 97.5%; }
+	
+	.item_mini.margen { margin: 0 0 0 5px}
+	.nc_categorias li { width: 24%; font-size: 14px; }
+	.single-nuestra-cocina .tabla_nutricional li img { width: 20px; }
+	.single-nuestra-cocina .tabla_nutricional p { font-size: 10px; }
+	.single-nuestra-cocina .tabla_nutricional h2 { font-size: 9px; padding: 8px 0 0; }
+	.widget-container {
+		float: left;
+	    padding: 0 2%;
+	    width: 50%;
+	}
+	.twitter-timeline { width: 100% !important; }
+	.fb_iframe_widget iframe { width: 113% !important; }
+
+
+}
+@media screen and (min-width:200px) and (max-width:360px) {
+    .entry-content img {margin: 0 0 20px 10px;}
+    .blog .entry-content p, .single .entry-content p, .category .entry-content p, .category .entry-summary p, .search .entry-summary p { padding: 0 10px 23px 12px; }
+    .widget-title { font-size: 16px;}
+	.menu_rrss li a {
+		height: 24px;
+	}
+	.menu_rrss li a:hover img {
+	    top: -24px;
+	}
+	#pie .menu_rrss li a {
+		height: 30px;
+	}
+	#pie .menu_rrss li a:hover img {
+	    top: -30px;
+	}
+
+	nav#menu ul li a:hover{
+		color: inherit;
+		background-color: inherit;
+		background-image: inherit;
+	}
+	.pagination a:hover {
+	    background: none;
+	    color: inherit;
+	}
+	.legal b {margin-top: inherit;}
+	.container .row { margin-left: 0px !important; margin-right: 0px !important;}
+	.item_big a.boton { width: 100% }
+	.item .sombra {width: 93%}
+	.item h2 { line-height: 21px; margin-top: 4px}
+	.item_med {width: 96%}
+	.paginacion { width: 100% !important}
+	.item_mini  { margin-left: 0px; margin-right: 0px; width: 100%;}
+	.item_mini.margen { margin: 0px 0px 30px 0px; }
+	.homeblog .cabecera_blog { width: 42%; }
+	.item_blog { width: auto}
+	.item_blog.margen { margin-bottom: 30px; margin-left: 0; margin-right: 0; }
+	.nc_categorias li { width: 100% }
+	.navigation_links { text-align: center; margin-top: 34px; padding: 0px }
+	.navigation_links [rel="prev"] { float: left; margin-left: -2px;}
+	.navigation_links [rel="next"] { float: right; margin-right: -2px;}
+	.item_ncocina .categoria img { width: 38px}
+	.single-nuestra-cocina .iconos_social, .item_ncocina .iconos_social, .iconos_social { padding: 16px 0 20px}
+	.single-nuestra-cocina .tabla_nutricional li { display: block; width: auto; text-align: center; }
+	.single-nuestra-cocina .tabla_nutricional li#imagee img { width: 79px; max-width: inherit;}
+	.single-nuestra-cocina .i_like {
+		border-bottom: none;
+		border-top: 1px dotted #000;
+		border-left: 1px dotted #000;
+		border-right: 1px dotted #000;
+	}
+	.single-nuestra-cocina .btn_imprimir {
+		border-bottom: 1px dotted #000;
+		border-top: none;
+		border-left: 1px dotted #000;
+		border-right: 1px dotted #000;
+	}
+	#redessociales{ margin-left: -67px; top: 10px; }
+	#redessociales li a img { width: 24px; }
+	#layer h1 { width: 100% !important; background-size: 100% auto}
+	.page-template-page-grupo-ifa .btn_enlace_web a {width: auto}
+	.pagination span, .pagination a {
+	    font-size: 13px;
+	    margin: 0;
+	    padding: 0 2px;
+	    width: auto;
+	}
+	.cabecera_blog h1 { padding: 5px 0 0; }
+	.categorias img { width: 32px}
+	#layer .content.opened { height: 1250px;}
+	.blog .wrapper { padding-left: 0; padding-right: 0; 	}
+	.more_link_post_blog { margin: -2px 0 0; position: inherit; 	}
+	.post-ratings { text-align: left; }
+	.blog article { margin-bottom: 30px; padding: 0 0 70px; }
+	.widget-easy-twitter-feed-widget-container .col-lg-12 { padding-left: 0px; padding-right: 0px;}
+	p.breadcrumb , ol.breadcrumb {padding: 30px 0;}
+	#fb_sidebar_widget iframe { width: 270px !important }
+	.widget-container.widget_youtubesidebarwidget ul li {    padding: 0 10px 8px;}
+}
+@media screen and (max-width:768px) {
+
+	.item_med{
+		width: 96%;
+	}
+	.item_mini{
+		width: 100%;
+	
+	}
+	.tira_mini{
+		padding: 0 15px;
+	}
+	.item_mini a.enlace_mini{
+		width: 100%;
+	}
+
+	.item_mini.margen{
+		margin-left: 0;
+		margin-right: 0;
+		margin-bottom: 30px;
+	}
+}
+
+@media screen and (max-width:360px) {
+	.tira_mini{
+		padding: 0;
+	}
+}
